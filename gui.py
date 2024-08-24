@@ -10,10 +10,13 @@ root.title("Sorting Algorithms Visualization")
 root.maxsize(900, 600)
 root.config(bg="#021526")
 
+
 selected_alg = StringVar()
 data = []
 stop_signal = threading.Event()
 current_thread = None
+
+
 
 def draw_data(data, color_list):
     if not stop_signal.is_set() and root.winfo_exists():
@@ -37,7 +40,8 @@ def draw_data(data, color_list):
                 print(f"Error in visualize_data: {e}")
 
 def generate():
-    global data, current_thread, stop_signal
+    
+    global data, current_thread, stop_signal,i
     if current_thread and current_thread.is_alive():
         stop_signal.set()
         current_thread.join()
@@ -59,15 +63,15 @@ def startAlgorithm():
         current_thread.join()
         stop_signal.clear()
 
-    if algorithMenu.get() == "Bubble Sort":
+    if algorithm_selector.get() == "Bubble Sort":
         stop_signal = threading.Event()
         current_thread = threading.Thread(target=bubble_sort, args=(data, draw_data, speedScale.get(), stop_signal))
         current_thread.start()
-    elif algorithMenu.get() == "Selection Sort":
+    elif algorithm_selector.get() == "Selection Sort":
         stop_signal = threading.Event()
         current_thread = threading.Thread(target=selection_sort, args=(data, draw_data, speedScale.get(), stop_signal))
         current_thread.start()
-    elif algorithMenu.get() == "Quick Sort":
+    elif algorithm_selector.get() == "Quick Sort":
         stop_signal = threading.Event()
         current_thread = threading.Thread(target=bubble_sort, args=(data, draw_data, speedScale.get(), stop_signal))
         current_thread.start()
@@ -85,6 +89,8 @@ def on_closing():
 
 root.protocol("WM_DELETE_WINDOW", on_closing)
 
+
+
 # Frame and UI setup
 UI_frame = Frame(root, bg='#6EACDA')
 UI_frame.grid(row=0, column=0, padx=10, pady=5, sticky="nsew")
@@ -94,26 +100,28 @@ canvas.grid(row=1, column=0, padx=10, pady=5, sticky="nsew")
 
 # User Interface
 Label(UI_frame, text="Algorithm:", bg="#6EACDA").grid(row=0, column=0, padx=5, pady=5, sticky=W)
-algorithMenu = ttk.Combobox(UI_frame, textvariable=selected_alg, values=["Bubble Sort","Selection Sort","Merge Sort"])
-algorithMenu.grid(row=0, column=1, padx=5, pady=5)
-algorithMenu.current(0)
+algorithm_selector = ttk.Combobox(UI_frame, textvariable=selected_alg, values=["Bubble Sort","Selection Sort","Merge Sort"])
 
-speedScale = Scale(UI_frame, from_=0.1, to=2.0, length=200, digits=2, resolution=0.2, orient=HORIZONTAL, label="Select speed")
+algorithm_selector.grid(row=0, column=1, padx=5, pady=5)
+algorithm_selector.current(0)
+
+speedScale = Scale(UI_frame, from_=0.1, to=2.0, length=200, digits=2, resolution=0.2, orient=HORIZONTAL, label="Select speed", bg="#3282B8")
+
 speedScale.grid(row=0, column=2, padx=5, pady=5)
-startButton = Button(UI_frame, text="Start", command=startAlgorithm, bg="#508C9B")
+startButton = Button(UI_frame, text="Start", command=startAlgorithm, bg="#3282B8")
 startButton.grid(row=0, column=3, padx=5, pady=5)
 
-sizeEntry = Scale(UI_frame, from_=3, to=25, resolution=1, orient=HORIZONTAL, label="Select size")
-sizeEntry.grid(row=1, column=0, padx=5, pady=5)
+sizeEntry = Scale(UI_frame, from_=3, to=25, resolution=1, orient=HORIZONTAL, label="Select size", bg="#3282B8")
+sizeEntry.grid(row=1, column=1, padx=5, pady=5)
 sizeEntry.set(15)
 
-minEntry = Scale(UI_frame, from_=0, to=10, resolution=1, orient=HORIZONTAL, label="Min value")
-minEntry.grid(row=1, column=1, padx=5, pady=5)
+minEntry = Scale(UI_frame, from_=0, to=10, resolution=1, orient=HORIZONTAL, label="Min value", bg="#3282B8")
+minEntry.grid(row=1, column=2, padx=5, pady=5)
 
-maxEntry = Scale(UI_frame, from_=10, to=100, resolution=1, orient=HORIZONTAL, label="Max value")
-maxEntry.grid(row=1, column=2, padx=5, pady=5)
+maxEntry = Scale(UI_frame, from_=10, to=100, resolution=1, orient=HORIZONTAL, label="Max value", bg="#3282B8")
+maxEntry.grid(row=1, column=3, padx=5, pady=5)
 maxEntry.set(100)
-Button(UI_frame, text="Generate", command=generate, bg="white").grid(row=1, column=3, padx=5, pady=5)
+Button(UI_frame, text="Generate", command=generate, bg="#3282B8").grid(row=1, column=0, padx=5, pady=5)
 
 # Make the UI responsive
 root.grid_rowconfigure(1, weight=1)
