@@ -16,25 +16,25 @@ def selection_sort(data, draw_data, timeTick, stop_signal):
                 return  # Exit the function if stop signal is set
             
             # Highlight the current element being examined in green
-            color_array = ['yellow' if x == min_idx else ('green' if x == j else '#FF204E') for x in range(n)]
-            draw_data(data, color_array)
-            time.sleep(timeTick)
+            #color_array = ['yellow' if x == min_idx else ('green' if x == j else '#FF204E') for x in range(n)]
+            #draw_data(data, color_array)
+            #time.sleep(timeTick)
             
             # Compare the current value with the smallest found so far
             if data[j] < data[min_idx]:
                 min_idx = j
 
                 # Update color to mark the new minimum element as yellow
-                color_array = ['yellow' if x == min_idx else ('green' if x == j else '#FF204E') for x in range(n)]
-                draw_data(data, color_array)
-                time.sleep(timeTick)
+            color_array = ['yellow' if x == min_idx else ('green' if x == j else '#FF204E') for x in range(n)]
+            draw_data(data, color_array)
+            time.sleep(timeTick)
 
         # Swap the found minimum element with the first element of the unsorted part
         data[i], data[min_idx] = data[min_idx], data[i]
 
         # Mark the swapped element (which is now in its correct place) as green
-        draw_data(data, ['green' if x <= i else '#FF204E' for x in range(n)])
-        time.sleep(timeTick)
+       # draw_data(data, ['green' if x <= i else '#FF204E' for x in range(n)])
+        #time.sleep(timeTick)
 
         # Early exit if stop_signal is set
         if stop_signal.is_set():
