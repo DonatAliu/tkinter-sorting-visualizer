@@ -4,8 +4,10 @@ import random
 import time
 import threading
 from bubbleSort import bubble_sort
+from mergeSort import merge_sort
+from quickSort import quick_sort
 from selectionSort import selection_sort
-
+#yellow is F9D689
 root = Tk()
 root.title("Sorting Algorithms Visualization")
 root.maxsize(1500, 1000)
@@ -56,7 +58,7 @@ def generate():
             maxVal = int(maxEntry.get())
             size = int(sizeEntry.get())
             data = [random.randrange(minVal, maxVal + 1) for _ in range(size)]
-            draw_data(data, ['#FF204E' for _ in range(len(data))])
+            draw_data(data, ['#E1D7B7' for _ in range(len(data))])
             startButton.config(state="normal")
            # root.after(size*100, lambda: generateButton.config(state="normal"))
     except Exception as e:
@@ -82,9 +84,13 @@ def startAlgorithm():
             algorithm = algorithm_selector.get()
 
             if algorithm == "Bubble Sort":
-                current_thread = threading.Thread(target=bubble_sort, args=(data, safe_draw_data, speedScale.get(), stop_signal,data_lock))
+                current_thread = threading.Thread(target=bubble_sort, args=(data, safe_draw_data, speedScale.get(), stop_signal))
             elif algorithm == "Selection Sort":
                 current_thread = threading.Thread(target=selection_sort, args=(data, safe_draw_data, speedScale.get(), stop_signal))
+            elif algorithm == "Merge Sort":
+                current_thread = threading.Thread(target=merge_sort, args=(data, safe_draw_data, speedScale.get(), stop_signal))
+            elif algorithm == "Quick Sort":
+                current_thread = threading.Thread(target=quick_sort, args=(data, safe_draw_data, speedScale.get(), stop_signal))
             
             current_thread.start()
     except Exception as e:
@@ -92,12 +98,10 @@ def startAlgorithm():
 
 
 def safe_draw_data(data, color_list):
-    """Thread-safe way to request a redraw on the main thread."""
     root.after(0, draw_data, data, color_list)
 
 
 def on_closing():
-    """Handle closing of the window."""
     global current_thread, stop_signal
 
     with data_lock:
@@ -119,12 +123,12 @@ root.protocol("WM_DELETE_WINDOW", on_closing)
 UI_frame = Frame(root, bg='#6EACDA')
 UI_frame.grid(row=0, column=0, padx=10, pady=5, sticky="nsew")
 
-canvas = Canvas(root, bg="#03346E")
+canvas = Canvas(root, bg="#1A4870")
 canvas.grid(row=1, column=0, padx=10, pady=5, sticky="nsew")
 
 # User Interface
 Label(UI_frame, text="Algorithm:", bg="#6EACDA").grid(row=0, column=0, padx=5, pady=5, sticky=W)
-algorithm_selector = ttk.Combobox(UI_frame, textvariable=selected_alg, values=["Bubble Sort", "Selection Sort", "Merge Sort"])
+algorithm_selector = ttk.Combobox(UI_frame, textvariable=selected_alg, values=["Bubble Sort", "Selection Sort", "Merge Sort","Quick Sort"])
 algorithm_selector.grid(row=0, column=1, padx=5, pady=5)
 algorithm_selector.current(0)
 
@@ -146,7 +150,7 @@ maxEntry.grid(row=1, column=3, padx=5, pady=5)
 maxEntry.set(100)
 
 generateButton=Button(UI_frame, text="Generate", command=generate, bg="#3282B8")
-generateButton.grid(row=0, column=4, padx=5, pady=5)
+generateButton.grid(row=1, column=0, padx=5, pady=5)
 
 # Make the UI responsive
 root.grid_rowconfigure(1, weight=1)

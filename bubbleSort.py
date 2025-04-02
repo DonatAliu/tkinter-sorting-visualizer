@@ -1,7 +1,7 @@
 import time
 import threading
 
-def bubble_sort(data, draw_data, timeTick, stop_signal, data_lock=None):
+def bubble_sort(data, draw_data, timeTick, stop_signal):
     n = len(data)
     for i in range(n - 1):
         swapped = False
@@ -15,7 +15,7 @@ def bubble_sort(data, draw_data, timeTick, stop_signal, data_lock=None):
 
             # Optionally throttle UI updates to reduce load
             # Draw less frequently for large datasets
-            draw_data(data, ['green' if x == j or x == j + 1 else '#FF204E' for x in range(n)])
+            draw_data(data, ['#41B06E' if x == j or x == j + 1 else '#E1D7B7' for x in range(n)])
             time.sleep(timeTick)  # Throttle speed based on user settings
 
         if not swapped:
@@ -23,5 +23,5 @@ def bubble_sort(data, draw_data, timeTick, stop_signal, data_lock=None):
 
     # Final draw to ensure the sorted list is shown with thread safety
 
-    draw_data(data, ['green' for _ in range(n)])
+    draw_data(data, ['#41B06E' for _ in range(n)])
  
